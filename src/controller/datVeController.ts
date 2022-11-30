@@ -9,7 +9,7 @@ import {
 
 class DatVeController {
   postDatVe = async (req: Request, res: Response) => {
-    let basic_info = req.body.data
+    let basic_info = req.body.danhSachVe
     try {
       basic_info.map(async(a:any)=>{
         await CreateDatVe(a)
