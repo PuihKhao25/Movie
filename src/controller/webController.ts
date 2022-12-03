@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { ListFlimForWeb } from "../model/flim";
 import { ListPhongveForWeb } from "../model/datVe";
 import {
   SystemError,
@@ -8,10 +7,10 @@ import {
 } from "../constant/response";
 
 class WebController {
-  getListPhim = async (req: Request, res: Response) => {
+  getInfoLichChieuPhim = async (req: Request, res: Response) => {
     try {
-      let listFlim = await ListFlimForWeb();
-      ResponseSuccess(res, listFlim);
+      // let listFlim = await ListFlimForWeb();
+      ResponseSuccess(res);
     } catch (e: any) {
       return SystemError(res, e);
     }
@@ -25,6 +24,7 @@ class WebController {
       return SystemError(res, e);
     }
   };
+ 
 }
 
 export default new WebController();

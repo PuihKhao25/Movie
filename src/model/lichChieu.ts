@@ -34,3 +34,4 @@ export const UpdateLichChieu = async (basic_info: any, id: number) => {
   let value = [basic_info, id];
   return Conn.Excute(sql, value);
 };
+
