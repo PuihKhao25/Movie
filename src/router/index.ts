@@ -12,15 +12,15 @@ import datve from './datVe';
 
 const router: Router = Router()
 
-router.use('/auth', auth);
-router.use('/admin', admin);
-router.use('/admin/banner', banner);
+router.use('/', auth);
+router.use('/', admin);
+router.use('/', banner);
 router.use('/cinemasystem', Cinima);
 router.use('/cumrap', cumrap);
 router.use('/chair', chair);
-router.use('/web',web);
+router.use('/',web);
 router.use('/rapphim',rapPhim);
-router.use('/lichchieu',lichChieu);
-router.use('/datve',datve);
+router.use('/',lichChieu);
+router.use('/',datve);
 
 export default router

@@ -14,7 +14,7 @@ class FlimController {
         try {
             if (req.file) {
                 const result = await cloudinary.uploader.upload(req.file.path);
-                basic_info.hinh_anh = result.url;
+                basic_info.hinhAnh = result.url;
             }
             await CreateFlim(basic_info)
             ResponseSuccess(res)
@@ -59,13 +59,14 @@ class FlimController {
             } else {
                 const result = await cloudinary.uploader.upload(req.file.path);
                 basic_info.hinh_anh = result.url;
-            }       
+            }      
             await UpdateFLim(basic_info,id);
             ResponseSuccess(res)
         } catch (e: any) {
             return SystemError(res, e)
         }
     }
+
 }
 
 export default new FlimController;

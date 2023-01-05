@@ -1,11 +1,11 @@
 import * as express from "express";
 import ChairController from "../controller/ChairController";
-
+import { verifyToken } from "../middlewares/verifyToken";
 const router = express.Router();
 
-router.post("",ChairController.postChair);
+router.post("",verifyToken(["Quản Trị"]),ChairController.postChair);
 router.get("",ChairController.getChair);
-router.get("/:id",ChairController.getDetailChair);
-router.delete("/:id",ChairController.deleteChair);
-router.put('/:id',ChairController.updateChair)
+router.get("/:id",verifyToken(["Quản Trị"]),ChairController.getDetailChair);
+router.delete("/:id",verifyToken(["Quản Trị"]),ChairController.deleteChair);
+router.put('/:id',verifyToken(["Quản Trị"]),ChairController.updateChair)
 export default router;

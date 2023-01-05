@@ -13,9 +13,9 @@ export const ResponseFailed = (res: Response, message: any) =>{
     res.status(400).json(message);
 }
 
-export const ResponseSuccess = (res: Response, data?: any) =>
+export const ResponseSuccess = (res: Response, content?: any) =>
   res.status(200).json({
     code: "OK200",
     message: "OK",
-    data,
+    content,
   });

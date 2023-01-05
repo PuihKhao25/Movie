@@ -8,6 +8,7 @@ import {
   DeleteUser,
   UpdateUser,
   findByUsername,
+  AddUser
 } from "../model/user";
 import { ResError } from "../constant";
 import { EmailRegExp } from "../modules/strutil";
@@ -20,8 +21,8 @@ import bcrypt from "bcrypt";
 
 class AuthController {
   PostLogin = async (req: Request, res: Response) => {
-    const ho_ten = req?.body?.ho_ten;
-    const mat_khau = req?.body?.mat_khau;
+    const ho_ten = req?.body?.hoTen;
+    const mat_khau = req?.body?.matKhau;
     try {
       const auth: any = await findByUsername(ho_ten);
 
@@ -34,24 +35,35 @@ class AuthController {
           tai_khoan: auth.tai_khoan,
           ho_ten: auth.ho_ten,
           loai_nguoi_dung: auth.loai_nguoi_dung,
+          hoTen: auth.ho_ten,
+          email: auth.email,
+          soDt: auth.so_dt,
         },
         process.env.TOKEN_SECRET as Secret,
         { expiresIn: process.env.TOKEN_EXP }
       );
       const data = {
-        token: accessToken,
-        tai_khoan: auth.tai_khoan,
-        loai_nguoi_dung: auth.loai_nguoi_dung,
+        taiKhoan: auth.tai_khoan,
+        maLoaiNguoiDung: auth.loai_nguoi_dung,
+        hoTen: auth.ho_ten,
+        email: auth.email,
+        soDt: auth.so_dt,
+        accessToken: accessToken,
       };
-      
+
       ResponseSuccess(res, data);
     } catch (e: any) {
       return SystemError(res, e);
     }
   };
   postRegister = async (req: Request, res: Response) => {
-    let basic_info = req.body;
-    if (!basic_info.ho_ten || basic_info.ho_ten.length < 4)
+    let basic_info = {
+      ho_ten: req.body.hoTen,
+      email: req.body.email,
+      so_dt: req.body.soDt,
+      mat_khau: req.body.matKhau,
+    };
+    if (!basic_info.ho_ten || basic_info.ho_ten.length < 1)
       return ResponseFailed(res, ResError.USERNAME_INVALID);
     if (!EmailRegExp(basic_info.email))
       return ResponseFailed(res, ResError.EMAIL_INVALID);
@@ -103,6 +115,36 @@ class AuthController {
     let basic_info = req.body;
     try {
       await UpdateUser(basic_info, id);
+      ResponseSuccess(res);
+    } catch (e: any) {
+      return SystemError(res, e);
+    }
+  };
+  postAddUser = async (req: Request, res: Response) => {
+    let basic_info = {
+      ho_ten: req.body.hoTen,
+      email: req.body.email,
+      so_dt: req.body.soDt,
+      mat_khau: req.body.matKhau,
+      loai_nguoi_dung: req.body.maLoaiNguoiDung
+    };
+    console.log(basic_info);
+    
+    if (!basic_info.ho_ten || basic_info.ho_ten.length < 1)
+      return ResponseFailed(res, ResError.USERNAME_INVALID);
+    if (!EmailRegExp(basic_info.email))
+      return ResponseFailed(res, ResError.EMAIL_INVALID);
+    try {
+      const exist: any = await CheckExistUser(
+        basic_info.email,
+        basic_info.ho_ten
+      );
+      if (exist.length !== 0)
+        return ResponseFailed(res, ResError.ACCOUNT_EXISTED);
+      const salt = await bcrypt.genSalt(10);
+      basic_info.mat_khau = await bcrypt.hash(basic_info.mat_khau, salt);
+
+      // await AddUser(basic_info);
       ResponseSuccess(res);
     } catch (e: any) {
       return SystemError(res, e);

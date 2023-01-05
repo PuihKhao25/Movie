@@ -3,7 +3,7 @@ import DatVeController from "../controller/datVeController";
 
 const router = express.Router();
 
-router.post("", DatVeController.postDatVe);
+router.post("/QuanLyDatVe/DatVe", DatVeController.postDatVe);
 router.get("", DatVeController.getDatVe);
 router.get("/:id", DatVeController.getDetailDatVe);
 router.put("/:id", DatVeController.updateDatVe);

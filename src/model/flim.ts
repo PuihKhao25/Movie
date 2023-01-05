@@ -4,15 +4,15 @@ export const CreateFlim = async (basic_info: any) => {
   let sql = `INSERT INTO phim (ten_phim,trailer,hinh_anh,mo_ta,ngay_khoi_chieu,danh_gia,hot,
         dang_chieu,sap_chieu,created_at,deleted_at) VALUES (?,?,?,?,?,?,?,?,?,?,0)`;
   let value = [
-    basic_info.ten_phim,
+    basic_info.tenPhim,
     basic_info.trailer,
-    basic_info.hinh_anh,
-    basic_info.mo_ta,
-    basic_info.ngay_khoi_chieu,
-    basic_info.danh_gia,
+    basic_info.hinhAnh,
+    basic_info.moTa,
+    basic_info.ngayKhoiChieu,
+    basic_info.danhGia,
     basic_info.hot,
-    basic_info.dang_chieu,
-    basic_info.sap_chieu,
+    basic_info.dangChieu,
+    basic_info.sapChieu,
     new Date(),
   ];
   return Conn.Excute(sql, value);
@@ -25,7 +25,7 @@ export const ListFlim = async () => {
 };
 
 export const ListDetail = async (id: number) => {
-  let sql = `SELECT * FROM phim WHERE ma_phim=?`;
+  let sql = `SELECT ma_phim as maPhim, ten_phim as tenPhim,trailer,hinh_anh as hinhAnh, mo_ta as moTa,ngay_khoi_chieu as ngaykhoichieu,danh_gia as danhGia,hot, dang_chieu as dangChieu,sap_chieu as sapChieu  FROM phim WHERE ma_phim=?`;
   let value = [id];
   return Conn.GetOne(sql, value);
 };
@@ -36,9 +36,11 @@ export const DeleteFlim = async (id: number) => {
   return Conn.Excute(sql, value);
 };
 
-export const UpdateFLim = async (basic_info: any, id: number) => {
+export const UpdateFLim = async (basic: any, id: number) => {
+  console.log(basic);
+
   let sql = `UPDATE phim SET? WHERE ma_phim=?`;
-  let value = [basic_info, id];
+  let value = [basic, id];
   return Conn.Excute(sql, value);
 };
 
@@ -48,4 +50,36 @@ export const getURL = async (id: number) => {
   return Conn.GetOne(sql, value);
 };
 
+export const ListFlimForWeb = async (keyword: any, status: number) => {
+  let sql = `SELECT ma_phim as maPhim, ten_phim as tenPhim,trailer,hinh_anh as hinhAnh, mo_ta as moTa,ngay_khoi_chieu as ngaykhoichieu,danh_gia as danhGia,hot, dang_chieu as dangChieu,sap_chieu as sapChieu  FROM phim `;
+  let sqlSearch = ` WHERE deleted_at=false`;
+  let value = [];
 
+  if (keyword) {
+    keyword = "%" + keyword + "%";
+    switch (status) {
+      case 0:
+        sqlSearch += ` AND dang_chieu LIKE ?`;
+        value.push(keyword);
+        break;
+      case 1:
+        sqlSearch += ` AND sap_chieu LIKE ?`;
+        value.push(keyword);
+        break;
+    }
+  }
+
+  sql = sql + sqlSearch;
+  return Conn.GetList(sql, value);
+};
+
+export const ListDetailForWeb = (id: number) => {};
+
+export const GetCalendaPhim = (ma_phim: number) => {
+  let sql = `SELECT l.ma_lich_chieu as maLichChieu,l.ngay_gio_chieu as ngayGioChieu,l.gia_ve as giaVe,
+  l.ma_rap as maRap,r.ten_rap as tenRap FROM phim p
+  JOIN lichchieu l ON l.ma_phim = p.ma_phim
+  JOIN rapphim r ON r.ma_rap = l.ma_rap
+  WHERE p.ma_phim in (?)`;
+  return Conn.GetList(sql, [ma_phim]);
+};
