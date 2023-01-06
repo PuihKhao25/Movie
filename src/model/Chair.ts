@@ -29,3 +29,8 @@ export const DeleteChair = async (id: number) => {
     let value = [id];
     return Conn.GetOne(sql, value);
 }
+
+export const ListAllChairForWeb = async (ma_rap:number) => {
+    let sql = `SELECT ten_ghe FROM ghe WHERE ma_rap=? AND deleted_at=false`;
+    return Conn.GetList(sql, [ma_rap]);
+}

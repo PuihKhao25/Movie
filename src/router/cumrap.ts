@@ -3,7 +3,7 @@ import CumRapController from "../controller/cumRapController";
 import { verifyToken } from "../middlewares/verifyToken";
 const router = express.Router();
 
-router.post("", verifyToken(["Quản Trị"]), CumRapController.postCumRap);
+router.post("", CumRapController.postCumRap);
 router.get("", CumRapController.getCumRap);
 router.get("/:id", CumRapController.getDetailCumRap);
 router.put("/:id", verifyToken(["Quản Trị"]), CumRapController.updateCumRap);

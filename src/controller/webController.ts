@@ -4,9 +4,10 @@ import { ListBanner } from "../model/banner";
 import { ListFlimForWeb, ListDetail } from "../model/flim";
 import { ResError } from "../constant";
 import { GetAllRapPhimForWeb } from "../model/rapflim";
-import { ListDetailForWeb,GetCalendaPhim } from "../model/flim";
+import { ListDetailForWeb, GetCalendaPhim } from "../model/flim";
 import { GetCumRapSystem } from "../model/cumrap";
 import { GetCalendarSystem } from "../model/lichChieu";
+import { ListAllChairForWeb } from "../model/Chair";
 import {
   SystemError,
   ResponseFailed,
@@ -87,7 +88,7 @@ class WebController {
     let ma_he_thong_rap = Number(req.query.maHeThongRap);
     try {
       let listCalendarSystem = await GetCalendarSystem(ma_he_thong_rap);
-      ResponseSuccess(res,listCalendarSystem)
+      ResponseSuccess(res, listCalendarSystem);
     } catch (e: any) {
       return SystemError(res, e);
     }
@@ -96,11 +97,20 @@ class WebController {
     let ma_phim = Number(req.query.maPhim);
     try {
       let listCalendarSystem = await GetCalendaPhim(ma_phim);
-      ResponseSuccess(res,listCalendarSystem)
+      ResponseSuccess(res, listCalendarSystem);
     } catch (e: any) {
       return SystemError(res, e);
     }
-  }
+  };
+  getChairSystem = async (req: Request, res: Response) => {
+    let ma_rap = Number(req.query.maRap);
+    try {
+      let list = await ListAllChairForWeb(ma_rap)
+      ResponseSuccess(res,list)
+    } catch (e: any) {
+      return SystemError(res, e);
+    }
+  };
 }
 
 export default new WebController();

@@ -3,7 +3,7 @@ import RapPhimController from "../controller/rapPhimController";
 import { verifyToken } from "../middlewares/verifyToken";
 const router = express.Router();
 
-router.post("",verifyToken(["Quản Trị"]), RapPhimController.postRapPhim);
+router.post("", RapPhimController.postRapPhim);
 router.get("", RapPhimController.getRapPhim);
 router.get("/:id", RapPhimController.getDetailRapPhim);
 router.put("/:id",verifyToken(["Quản Trị"]), RapPhimController.updateRapPhim);

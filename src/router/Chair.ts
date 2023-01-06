@@ -3,7 +3,7 @@ import ChairController from "../controller/ChairController";
 import { verifyToken } from "../middlewares/verifyToken";
 const router = express.Router();
 
-router.post("",verifyToken(["Quản Trị"]),ChairController.postChair);
+router.post("",ChairController.postChair);
 router.get("",ChairController.getChair);
 router.get("/:id",verifyToken(["Quản Trị"]),ChairController.getDetailChair);
 router.delete("/:id",verifyToken(["Quản Trị"]),ChairController.deleteChair);
