@@ -1,5 +1,11 @@
 import { Request, Response } from "express";
-import {CreateDatVe,ListDatVe,DetailDatVe,DeleteDatVe,UpdateDatVe} from "../model/datVe";
+import {
+  CreateDatVe,
+  ListDatVe,
+  DetailDatVe,
+  DeleteDatVe,
+  UpdateDatVe,
+} from "../model/datVe";
 import { ResError } from "../constant";
 import {
   SystemError,
@@ -9,11 +15,9 @@ import {
 
 class DatVeController {
   postDatVe = async (req: Request, res: Response) => {
-    let basic_info = req.body.danhSachVe
+    const basic_info = req.body;
     try {
-      basic_info.map(async(a:any)=>{
-        await CreateDatVe(a)
-      })
+        await CreateDatVe(basic_info)
       ResponseSuccess(res);
     } catch (e: any) {
       return SystemError(res, e);
@@ -51,7 +55,7 @@ class DatVeController {
     try {
       await DeleteDatVe(ids);
       ResponseSuccess(res);
-    } catch (e: any) { 
+    } catch (e: any) {
       return SystemError(res, e);
     }
   };

@@ -4,7 +4,6 @@ import express from 'express';
 import router from './src/router/index';
 import cors from 'cors'
 const port =  process.env.PORT;
-console.log(port);
 
 
 const app = express();

@@ -76,10 +76,10 @@ export const ListFlimForWeb = async (keyword: any, status: number) => {
 export const ListDetailForWeb = (id: number) => {};
 
 export const GetCalendaPhim = (ma_phim: number) => {
-  let sql = `SELECT l.ma_lich_chieu as maLichChieu,l.ngay_gio_chieu as ngayGioChieu,l.gia_ve as giaVe,
+  let sql = `SELECT l.ma_lich_chieu as maLichChieu,l.gia_thuong,l.gia_vip,l.ngay_gio_chieu as ngayGioChieu,
   l.ma_rap as maRap,r.ten_rap as tenRap FROM phim p
   JOIN lichchieu l ON l.ma_phim = p.ma_phim
   JOIN rapphim r ON r.ma_rap = l.ma_rap
-  WHERE p.ma_phim in (?)`;
+  WHERE p.ma_phim =?`;
   return Conn.GetList(sql, [ma_phim]);
 };

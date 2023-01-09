@@ -31,6 +31,6 @@ export const DeleteChair = async (id: number) => {
 }
 
 export const ListAllChairForWeb = async (ma_rap:number) => {
-    let sql = `SELECT ten_ghe FROM ghe WHERE ma_rap=? AND deleted_at=false`;
+    let sql = `SELECT ma_ghe, ten_ghe as tenGhe FROM ghe WHERE ma_rap=? AND deleted_at=false`;
     return Conn.GetList(sql, [ma_rap]);
 }
