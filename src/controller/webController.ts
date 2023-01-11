@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { ListPhongveForWeb } from "../model/datVe";
+import { ListPhongveForWeb, ListBookedTicks } from "../model/datVe";
 import { ListBanner } from "../model/banner";
 import { ListFlimForWeb, ListDetail } from "../model/flim";
 import { ResError } from "../constant";
 import { GetAllRapPhimForWeb } from "../model/rapflim";
-import { ListDetailForWeb, GetCalendaPhim } from "../model/flim";
+import { GetCalendaPhim } from "../model/flim";
 import { GetCumRapSystem } from "../model/cumrap";
 import { GetCalendarSystem } from "../model/lichChieu";
 import { ListAllChairForWeb } from "../model/Chair";
@@ -27,8 +27,6 @@ class WebController {
     let malichchieu = req.query.malichchieu ? Number(req.query.malichchieu) : 1;
     try {
       let f = await ListPhongveForWeb(malichchieu);
-      console.log(f);
-
       ResponseSuccess(res, f);
     } catch (e: any) {
       return SystemError(res, e);
@@ -105,8 +103,17 @@ class WebController {
   getChairSystem = async (req: Request, res: Response) => {
     let ma_rap = Number(req.query.maRap);
     try {
-      let list = await ListAllChairForWeb(ma_rap)
-      ResponseSuccess(res,list)
+      let list = await ListAllChairForWeb(ma_rap);
+      ResponseSuccess(res, list);
+    } catch (e: any) {
+      return SystemError(res, e);
+    }
+  };
+  getListBookedTicks = async (req: Request, res: Response) => {
+    let ma_lich_chieu = Number(req.query.malichchieu);
+    try {
+      const list = await ListBookedTicks(ma_lich_chieu);
+      ResponseSuccess(res, list);
     } catch (e: any) {
       return SystemError(res, e);
     }

@@ -1,11 +1,10 @@
 import Conn, { pool } from "../../config/db-config";
 
 export const CreateDatVe = async (basic_info: any) => {
-
-  let sql = `INSERT INTO datve (tai_khoan,ten_ghe,ma_lich_chieu,tong_tien,created_at,deleted_at) VALUES (?,?,?,?,?,0)`;
+  let sql = `INSERT INTO datve (tai_khoan,ma_ghe,ma_lich_chieu,tong_tien,created_at,deleted_at) VALUES (?,?,?,?,?,0)`;
   let value = [
     basic_info.tai_khoan,
-    basic_info.ten_ghe,
+    basic_info.ma_ghe,
     basic_info.ma_lich_chieu,
     basic_info.tong_tien,
     new Date(),
@@ -54,4 +53,9 @@ export const ListPhongveForWeb = async (maLichChieu: number) => {
   let thongTinPhim = await Conn.GetOne(sqlBasic, [maLichChieu]);
   let danhSachGhe = await Conn.GetList(sqlChair, [maLichChieu]);
   return { thongTinPhim, danhSachGhe };
+};
+
+export const ListBookedTicks = async (ma_lich_chieu: number) => {
+  const sql = `SELECT ma_ghe FROM datve WHERE ma_lich_chieu =? AND deleted_at = false`;
+  return Conn.GetList(sql, [ma_lich_chieu]);
 };

@@ -1,12 +1,14 @@
 import Conn, { pool } from "../../config/db-config";
 
 export const CreateLichChieu = async (basic_info: any) => {
-  let sql = `INSERT INTO lichchieu (ma_rap,ma_phim,ngay_gio_chieu,gia_ve,created_at,deleted_at) VALUES (?,?,?,?,?,0)`;
+  let sql = `INSERT INTO lichchieu (ma_rap,ma_phim,ngay_gio_chieu,gia_thuong,gia_vip,created_at,deleted_at) 
+  VALUES (?,?,?,?,?,?,0)`;
   let value = [
     basic_info.ma_rap,
     basic_info.ma_phim,
     basic_info.ngay_gio_chieu,
-    basic_info.gia_ve,
+    basic_info.gia_thuong,
+    basic_info.gia_vip,
     new Date(),
   ];
   return Conn.Excute(sql, value);
