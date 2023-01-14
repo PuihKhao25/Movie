@@ -1,4 +1,0 @@
-{
-    "cleanUrls": true,
-    "buildCommand": "next build"
-  }
