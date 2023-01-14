@@ -1,16 +1,4 @@
 {
-    "version": 2,
-    "build": [
-        {
-            "src": "./app.ts",
-            "use": "@vercel/node"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "/"
-        }
-    ]
-
-}
+    "cleanUrls": true,
+    "buildCommand": "next build"
+  }
