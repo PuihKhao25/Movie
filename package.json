@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "npx tsc",
-    "start": "vercel dev",
+    "start": "NODE_ENV=dev nodemon ./app.ts",
     "deploy" : "vercel deploy --prod",
     "dev": "NODE_ENV=dev nodemon ./app.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
