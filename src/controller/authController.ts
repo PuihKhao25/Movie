@@ -111,7 +111,7 @@ class AuthController {
     }
   };
   updateUser = async (req: Request, res: Response) => {
-    let id = Number(req.params.id);
+    let id = Number(req.params.id); 
     let basic_info = req.body;
     try {
       await UpdateUser(basic_info, id);
