@@ -15,10 +15,12 @@ import {
 
 class DatVeController {
   postDatVe = async (req: Request, res: Response) => {
-    const basic_info = req.body;
+    const basic_info = req.body.danhSachVe;
     try {
-        await CreateDatVe(basic_info)
-      ResponseSuccess(res);
+      basic_info.map(async(result: any) => {
+        await CreateDatVe(result)
+        ResponseSuccess(res);
+      });
     } catch (e: any) {
       return SystemError(res, e);
     }

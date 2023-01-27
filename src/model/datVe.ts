@@ -1,12 +1,12 @@
 import Conn, { pool } from "../../config/db-config";
 
 export const CreateDatVe = async (basic_info: any) => {
-  let sql = `INSERT INTO datve (tai_khoan,ma_ghe,ma_lich_chieu,tong_tien,created_at,deleted_at) VALUES (?,?,?,?,?,0)`;
+  let sql = `INSERT INTO datve (tai_khoan,ma_ghe,ma_lich_chieu,gia_ve,created_at,deleted_at) VALUES (?,?,?,?,?,0)`;
   let value = [
     basic_info.tai_khoan,
     basic_info.ma_ghe,
     basic_info.ma_lich_chieu,
-    basic_info.tong_tien,
+    basic_info.gia_ve,
     new Date(),
   ];
   return Conn.Excute(sql, value);

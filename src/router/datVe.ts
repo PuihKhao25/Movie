@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/QuanLyDatVe/DatVe", DatVeController.postDatVe);
 router.get("", DatVeController.getDatVe);
-router.get("/:id", DatVeController.getDetailDatVe);
+router.get("/:id", DatVeController.getDetailDatVe); 
 router.put("/:id",verifyToken(["QuanTri"]), DatVeController.updateDatVe);
 router.delete("",verifyToken(["QuanTri"]), DatVeController.deleteDatVe);
 
