@@ -16,6 +16,8 @@ import {
 class DatVeController {
   postDatVe = async (req: Request, res: Response) => {
     const basic_info = req.body.danhSachVe;
+    console.log("basic_info",basic_info);
+    
     try {
       basic_info.map(async(result: any) => {
         await CreateDatVe(result)
