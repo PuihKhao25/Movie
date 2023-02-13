@@ -14,7 +14,8 @@ router.get("/layThongTinCumRapTheoHeThong",WebController.getCumrap);
 router.get("/QuanLyRap/LayThongTinLichChieuHeThongRap", WebController.getInfomationCalendarSystem);
 router.get("/QuanLyRap/LayThongTinLichChieu", WebController.getCalendarSystem);
 router.get("/QuanLyRap/layGheTheoRap", WebController.getChairSystem);
-router.get("/QuanLyDatVe/LayVeDaDat", webController.getListBookedTicks)
+router.get("/QuanLyDatVe/LayVeDaDat", webController.getListBookedTicks);
+router.get("/QuanLyDatVe/LayPhimTheoLichChieu", webController.getDetailFlimBookTicket)
 
 
 

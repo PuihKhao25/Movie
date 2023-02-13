@@ -8,7 +8,8 @@ import {
   DeleteUser,
   UpdateUser,
   findByUsername,
-  AddUser
+  AddUser,
+  ListHistory
 } from "../model/user";
 import { ResError } from "../constant";
 import { EmailRegExp } from "../modules/strutil";
@@ -111,7 +112,7 @@ class AuthController {
     }
   };
   updateUser = async (req: Request, res: Response) => {
-    let id = Number(req.params.id); 
+    let id = Number(req.params.id);
     let basic_info = req.body;
     try {
       await UpdateUser(basic_info, id);
@@ -126,10 +127,10 @@ class AuthController {
       email: req.body.email,
       so_dt: req.body.soDt,
       mat_khau: req.body.matKhau,
-      loai_nguoi_dung: req.body.maLoaiNguoiDung
+      loai_nguoi_dung: req.body.maLoaiNguoiDung,
     };
     console.log(basic_info);
-    
+
     if (!basic_info.ho_ten || basic_info.ho_ten.length < 1)
       return ResponseFailed(res, ResError.USERNAME_INVALID);
     if (!EmailRegExp(basic_info.email))
@@ -146,6 +147,15 @@ class AuthController {
 
       // await AddUser(basic_info);
       ResponseSuccess(res);
+    } catch (e: any) {
+      return SystemError(res, e);
+    }
+  };
+  getHistory = async (req: Request, res: Response) => {
+    const tai_khoan = Number(req.query.taiKhoan);
+    try {
+      const listHistory = await ListHistory(tai_khoan)
+      ResponseSuccess(res,listHistory)
     } catch (e: any) {
       return SystemError(res, e);
     }

@@ -79,5 +79,12 @@ export const GetAllRapPhimForWeb = async (ma_he_thong_rap: any) => {
     value.push(ma_he_thong_rap);
   }
   sql = sql + sqlSearch;
-  return Conn.GetList(sql,value)
+  return Conn.GetList(sql, value);
+};
+
+export const ListDetailFlim = async (ma_lich_chieu: number) => {
+  let sql = `SELECT p.ten_phim,p.hinh_anh,l.ngay_gio_chieu 
+  FROM lichchieu l JOIN phim p ON p.ma_phim = l.ma_phim 
+  WHERE l.ma_lich_chieu = ?`;
+  return Conn.GetOne(sql, [ma_lich_chieu]);
 };

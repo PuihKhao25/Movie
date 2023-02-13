@@ -3,7 +3,7 @@ import { ListPhongveForWeb, ListBookedTicks } from "../model/datVe";
 import { ListBanner } from "../model/banner";
 import { ListFlimForWeb, ListDetail } from "../model/flim";
 import { ResError } from "../constant";
-import { GetAllRapPhimForWeb } from "../model/rapflim";
+import { GetAllRapPhimForWeb,ListDetailFlim } from "../model/rapflim";
 import { GetCalendaPhim } from "../model/flim";
 import { GetCumRapSystem } from "../model/cumrap";
 import { GetCalendarSystem } from "../model/lichChieu";
@@ -113,6 +113,15 @@ class WebController {
     let ma_lich_chieu = Number(req.query.malichchieu);
     try {
       const list = await ListBookedTicks(ma_lich_chieu);
+      ResponseSuccess(res, list);
+    } catch (e: any) {
+      return SystemError(res, e);
+    }
+  };
+  getDetailFlimBookTicket = async (req: Request, res: Response) => {
+    let ma_lich_chieu = Number(req.query.maLichChieu);
+    try {
+      const list = await ListDetailFlim(ma_lich_chieu);
       ResponseSuccess(res, list);
     } catch (e: any) {
       return SystemError(res, e);

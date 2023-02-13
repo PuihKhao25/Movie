@@ -72,3 +72,12 @@ export const UpdateUser = async (basic_info: any, id: number) => {
   let value = [basic_info, id];
   return Conn.Excute(sql, value);
 };
+
+export const ListHistory = async (tai_khoan: number) => {
+  let sql = ` SELECT d.tai_khoan,d.ma_lich_chieu,d.ma_ghe,d.created_at, 
+  l.ma_phim,l.gia_vip,l.gia_thuong,p.ten_phim,p.hinh_anh FROM datve d
+  JOIN lichchieu l On l.ma_lich_chieu = d.ma_lich_chieu
+  JOIN phim p ON p.ma_phim = l.ma_phim
+   WHERE d.tai_khoan=?`;
+  return Conn.GetList(sql, [tai_khoan]);
+};
