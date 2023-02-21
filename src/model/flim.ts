@@ -75,11 +75,60 @@ export const ListFlimForWeb = async (keyword: any, status: number) => {
 
 export const GetCalendaPhim = (ma_phim: number) => {
   let sql = `SELECT l.ma_lich_chieu as maLichChieu,l.gia_thuong,l.gia_vip,l.ngay_gio_chieu as ngayGioChieu,h.logo,
-  l.ma_rap as maRap,r.ten_rap as tenRap FROM phim p
+  l.ma_rap as maRap,r.ten_rap as tenRap ,r.dia_chi as diaChi FROM phim p
   JOIN lichchieu l ON l.ma_phim = p.ma_phim
   JOIN rapphim r ON r.ma_rap = l.ma_rap
   JOIN cumrap c ON c.ma_cum_rap = r.ma_cum_rap
   JOIN hethongrap h ON h.ma_he_thong_rap = c.ma_he_thong_rap
   WHERE p.ma_phim =?`;
   return Conn.GetList(sql, [ma_phim]);
+};
+
+export const GetTime = (ma_phim: number) => {
+  let sql = `SELECT l.ngay_gio_chieu as ngayGioChieu FROM phim p
+  JOIN lichchieu l ON l.ma_phim = p.ma_phim
+  JOIN rapphim r ON r.ma_rap = l.ma_rap
+  JOIN cumrap c ON c.ma_cum_rap = r.ma_cum_rap
+  JOIN hethongrap h ON h.ma_he_thong_rap = c.ma_he_thong_rap
+  WHERE p.ma_phim =?`;
+  return Conn.GetList(sql, [ma_phim]);
+};
+
+export const ListHistory = async (tai_khoan: number) => {
+  let sql = `SELECT d.tai_khoan as taiKhoan,l.gia_vip as giaVip,l.gia_thuong as giaThuong, 
+  p.ten_phim as tenPhim,p.hinh_anh as hinhAnh, d.created_at as ngayDat, d.ma_ghe,g.ten_ghe
+  FROM datve d 
+  JOIN lichchieu l On l.ma_lich_chieu = d.ma_lich_chieu
+  JOIN phim p ON p.ma_phim = l.ma_phim
+  JOIN ghe g ON g.ma_ghe = d.ma_ghe
+  WHERE d.tai_khoan=? AND d.deleted_at = false`;
+
+  return Conn.GetList(sql, [tai_khoan]);
+};
+
+export const RevenueByShowtimes = async (ma_lich_chieu: number) => {
+  let sql = `SELECT d.tai_khoan, d.ma_lich_chieu,d.gia_ve, p.ten_phim FROM datve d 
+  JOIN lichchieu l ON l.ma_lich_chieu =d.ma_lich_chieu
+  JOIN phim p ON p.ma_phim = l.ma_phim
+  WHERE d.ma_lich_chieu = ? AND d.deleted_at = false
+  `;
+  return Conn.GetList(sql, [ma_lich_chieu]);
+};
+
+export const RevenueByPhim = async (ma_phim: number) => {
+  let sql = `SELECT l.ma_lich_chieu,d.tai_khoan,d.gia_ve,p.ten_phim FROM lichchieu l
+  JOIN datve d ON d.ma_lich_chieu = l.ma_lich_chieu
+  JOIN phim p ON p.ma_phim = l.ma_phim
+  WHERE l.ma_phim = ? AND l.deleted_at = false
+  `;
+  return Conn.GetList(sql, [ma_phim]);
+};
+
+export const RevenueByTheater = async (ma_rap: number) => {
+  let sql = `SELECT l.ma_lich_chieu,d.tai_khoan,d.gia_ve,p.ten_phim FROM lichchieu l
+  JOIN datve d ON d.ma_lich_chieu = l.ma_lich_chieu
+  JOIN phim p ON p.ma_phim = l.ma_phim
+  WHERE l.ma_rap = ? AND l.deleted_at = false
+  `;
+  return Conn.GetList(sql, [ma_rap]);
 };

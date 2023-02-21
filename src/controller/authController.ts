@@ -7,9 +7,9 @@ import {
   GetUserDetail,
   DeleteUser,
   UpdateUser,
-  findByUsername,
+  findByEmail,
   AddUser,
-  ListHistory
+  ListHistory,
 } from "../model/user";
 import { ResError } from "../constant";
 import { EmailRegExp } from "../modules/strutil";
@@ -22,10 +22,10 @@ import bcrypt from "bcrypt";
 
 class AuthController {
   PostLogin = async (req: Request, res: Response) => {
-    const ho_ten = req?.body?.hoTen;
+    const email = req?.body?.email;
     const mat_khau = req?.body?.matKhau;
     try {
-      const auth: any = await findByUsername(ho_ten);
+      const auth: any = await findByEmail(email);
 
       if (!auth) return ResponseFailed(res, ResError.USERNAME_NOT_EXIST);
       const passwordValid = await bcrypt.compare(mat_khau, auth.mat_khau);
@@ -115,6 +115,8 @@ class AuthController {
     let id = Number(req.params.id);
     let basic_info = req.body;
     try {
+      const salt = await bcrypt.genSalt(10);
+      basic_info.mat_khau = await bcrypt.hash(basic_info.mat_khau, salt);
       await UpdateUser(basic_info, id);
       ResponseSuccess(res);
     } catch (e: any) {
@@ -154,8 +156,8 @@ class AuthController {
   getHistory = async (req: Request, res: Response) => {
     const tai_khoan = Number(req.query.taiKhoan);
     try {
-      const listHistory = await ListHistory(tai_khoan)
-      ResponseSuccess(res,listHistory)
+      const listHistory = await ListHistory(tai_khoan);
+      ResponseSuccess(res, listHistory);
     } catch (e: any) {
       return SystemError(res, e);
     }

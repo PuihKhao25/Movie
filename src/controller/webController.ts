@@ -1,9 +1,17 @@
 import { Request, Response } from "express";
 import { ListPhongveForWeb, ListBookedTicks } from "../model/datVe";
 import { ListBanner } from "../model/banner";
-import { ListFlimForWeb, ListDetail } from "../model/flim";
+import {
+  ListFlimForWeb,
+  ListDetail,
+  ListHistory,
+  GetTime,
+  RevenueByShowtimes,
+  RevenueByPhim,
+  RevenueByTheater
+} from "../model/flim";
 import { ResError } from "../constant";
-import { GetAllRapPhimForWeb,ListDetailFlim } from "../model/rapflim";
+import { GetAllRapPhimForWeb, ListDetailFlim } from "../model/rapflim";
 import { GetCalendaPhim } from "../model/flim";
 import { GetCumRapSystem } from "../model/cumrap";
 import { GetCalendarSystem } from "../model/lichChieu";
@@ -112,8 +120,13 @@ class WebController {
   getListBookedTicks = async (req: Request, res: Response) => {
     let ma_lich_chieu = Number(req.query.malichchieu);
     try {
-      const list = await ListBookedTicks(ma_lich_chieu);
-      ResponseSuccess(res, list);
+      const list: any = await ListBookedTicks(ma_lich_chieu);
+      list.map((e: any) => {
+        const a = e.ma_ghe1;
+        console.log({ a: a });
+        console.log(typeof a);
+      });
+      // ResponseSuccess(res, list);
     } catch (e: any) {
       return SystemError(res, e);
     }
@@ -122,6 +135,54 @@ class WebController {
     let ma_lich_chieu = Number(req.query.maLichChieu);
     try {
       const list = await ListDetailFlim(ma_lich_chieu);
+      ResponseSuccess(res, list);
+    } catch (e: any) {
+      return SystemError(res, e);
+    }
+  };
+  getHistoryFlim = async (req: Request, res: Response) => {
+    const tai_khoan = Number(req.query.taiKhoan);
+    try {
+      const list = await ListHistory(tai_khoan);
+      ResponseSuccess(res, list);
+    } catch (e: any) {
+      return SystemError(res, e);
+    }
+  };
+
+  getTime = async (req: Request, res: Response) => {
+    const ma_phim = Number(req.query.maPhim);
+    try {
+      const list = await GetTime(ma_phim);
+      ResponseSuccess(res, list);
+    } catch (e: any) {
+      return SystemError(res, e);
+    }
+  };
+  revenueByShowtimes = async (req: Request, res: Response) => {
+    const ma_lich_chieu = Number(req.query.maLichChieu);
+    try {
+      const list = await RevenueByShowtimes(ma_lich_chieu);
+      ResponseSuccess(res, list);
+    } catch (e: any) {
+      return SystemError(res, e);
+    }
+  };
+
+  revenueByFilm = async (req: Request, res: Response) => {
+    const ma_phim = Number(req.query.maPhim);
+    try {
+      const list = await RevenueByPhim(ma_phim);
+      ResponseSuccess(res, list);
+    } catch (e: any) {
+      return SystemError(res, e);
+    }
+  };
+
+  revenueByTheater = async (req: Request, res: Response) => {
+    const ma_rap = Number(req.query.maRap);
+    try {
+      const list = await RevenueByTheater(ma_rap);
       ResponseSuccess(res, list);
     } catch (e: any) {
       return SystemError(res, e);

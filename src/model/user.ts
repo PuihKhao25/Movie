@@ -1,9 +1,9 @@
 import Conn, { pool } from "../../config/db-config";
 
-export const findByUsername = async (matKhau: string) => {
+export const findByEmail = async (matKhau: string) => {
   let sql = `SELECT tai_khoan, ho_ten, mat_khau,loai_nguoi_dung,email, so_dt
             FROM nguoidung 
-            WHERE ho_ten =? AND deleted_at=false`;
+            WHERE email =? AND deleted_at=false`;
   let value = [matKhau];
   return Conn.GetOne(sql, value);
 };
