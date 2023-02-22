@@ -19,7 +19,6 @@ class RapPhimController {
     let ten_rap = req.body.ten_rap;
     let dia_chi = req.body.dia_chi;
     let ma_cum_rap = Number(req.body.ma_cum_rap);
-    console.log(ten_rap);
     try {
       await CreateRapPhim(ten_rap, dia_chi, ma_cum_rap);
       ResponseSuccess(res);

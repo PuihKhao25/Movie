@@ -37,7 +37,6 @@ export const DeleteFlim = async (id: number) => {
 };
 
 export const UpdateFLim = async (basic: any, id: number) => {
-  console.log(basic);
 
   let sql = `UPDATE phim SET? WHERE ma_phim=?`;
   let value = [basic, id];
@@ -50,24 +49,18 @@ export const getURL = async (id: number) => {
   return Conn.GetOne(sql, value);
 };
 
-export const ListFlimForWeb = async (keyword: any, status: number) => {
+export const ListFlimForWeb = async (ten_phim: any) => {
   let sql = `SELECT ma_phim as maPhim, ten_phim as tenPhim,trailer,hinh_anh as hinhAnh, mo_ta as moTa,ngay_khoi_chieu as ngaykhoichieu,danh_gia as danhGia,hot, dang_chieu as dangChieu,sap_chieu as sapChieu  FROM phim `;
   let sqlSearch = ` WHERE deleted_at=false`;
   let value = [];
 
-  if (keyword) {
-    keyword = "%" + keyword + "%";
-    switch (status) {
-      case 0:
-        sqlSearch += ` AND dang_chieu LIKE ?`;
-        value.push(keyword);
-        break;
-      case 1:
-        sqlSearch += ` AND sap_chieu LIKE ?`;
-        value.push(keyword);
-        break;
-    }
+  if (ten_phim) {
+    ten_phim = "%" + ten_phim + "%";
+    sqlSearch += ` AND ten_phim LIKE?`;
+    value.push(ten_phim);
   }
+
+  console.log(ten_phim);
 
   sql = sql + sqlSearch;
   return Conn.GetList(sql, value);
@@ -95,8 +88,8 @@ export const GetTime = (ma_phim: number) => {
 };
 
 export const ListHistory = async (tai_khoan: number) => {
-  let sql = `SELECT d.tai_khoan as taiKhoan,l.gia_vip as giaVip,l.gia_thuong as giaThuong, 
-  p.ten_phim as tenPhim,p.hinh_anh as hinhAnh, d.created_at as ngayDat, d.ma_ghe,g.ten_ghe
+  let sql = `SELECT d.tai_khoan as taiKhoan,
+  p.ten_phim as tenPhim,p.hinh_anh as hinhAnh, d.created_at as ngayDat, d.gia_ve,d.ma_ghe,g.ten_ghe
   FROM datve d 
   JOIN lichchieu l On l.ma_lich_chieu = d.ma_lich_chieu
   JOIN phim p ON p.ma_phim = l.ma_phim
@@ -107,27 +100,30 @@ export const ListHistory = async (tai_khoan: number) => {
 };
 
 export const RevenueByShowtimes = async (ma_lich_chieu: number) => {
-  let sql = `SELECT d.tai_khoan, d.ma_lich_chieu,d.gia_ve, p.ten_phim FROM datve d 
+  let sql = `SELECT d.tai_khoan, d.ma_lich_chieu,d.gia_ve, p.ten_phim ,g.ten_ghe FROM datve d 
   JOIN lichchieu l ON l.ma_lich_chieu =d.ma_lich_chieu
   JOIN phim p ON p.ma_phim = l.ma_phim
+  JOIN ghe g ON g.ma_ghe = d.ma_ghe
   WHERE d.ma_lich_chieu = ? AND d.deleted_at = false
   `;
   return Conn.GetList(sql, [ma_lich_chieu]);
 };
 
 export const RevenueByPhim = async (ma_phim: number) => {
-  let sql = `SELECT l.ma_lich_chieu,d.tai_khoan,d.gia_ve,p.ten_phim FROM lichchieu l
+  let sql = `SELECT l.ma_lich_chieu,d.tai_khoan,d.gia_ve,p.ten_phim , g.ten_ghe FROM lichchieu l
   JOIN datve d ON d.ma_lich_chieu = l.ma_lich_chieu
   JOIN phim p ON p.ma_phim = l.ma_phim
+  JOIN ghe g ON g.ma_ghe = d.ma_ghe
   WHERE l.ma_phim = ? AND l.deleted_at = false
   `;
   return Conn.GetList(sql, [ma_phim]);
 };
 
 export const RevenueByTheater = async (ma_rap: number) => {
-  let sql = `SELECT l.ma_lich_chieu,d.tai_khoan,d.gia_ve,p.ten_phim FROM lichchieu l
+  let sql = `SELECT l.ma_lich_chieu,d.tai_khoan,d.gia_ve,p.ten_phim,ten_ghe FROM lichchieu l
   JOIN datve d ON d.ma_lich_chieu = l.ma_lich_chieu
   JOIN phim p ON p.ma_phim = l.ma_phim
+  JOIN ghe g ON g.ma_ghe = d.ma_ghe
   WHERE l.ma_rap = ? AND l.deleted_at = false
   `;
   return Conn.GetList(sql, [ma_rap]);

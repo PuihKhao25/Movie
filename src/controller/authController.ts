@@ -131,8 +131,7 @@ class AuthController {
       mat_khau: req.body.matKhau,
       loai_nguoi_dung: req.body.maLoaiNguoiDung,
     };
-    console.log(basic_info);
-
+  
     if (!basic_info.ho_ten || basic_info.ho_ten.length < 1)
       return ResponseFailed(res, ResError.USERNAME_INVALID);
     if (!EmailRegExp(basic_info.email))

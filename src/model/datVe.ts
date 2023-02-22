@@ -52,7 +52,8 @@ export const ListPhongveForWeb = async (maLichChieu: number) => {
 };
 
 export const ListBookedTicks = async (ma_lich_chieu: number) => {
-  const sql = `SELECT d.ma_ghe1 FROM datve d
+  const sql = `SELECT d.ma_ghe, g.ten_ghe FROM datve d
+  JOIN ghe g ON g.ma_ghe = d.ma_ghe
   WHERE d.ma_lich_chieu =? AND d.deleted_at = false`;
   return Conn.GetList(sql, [ma_lich_chieu]);
 };

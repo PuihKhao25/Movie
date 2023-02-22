@@ -49,10 +49,9 @@ class WebController {
     }
   };
   getListPhim = async (req: Request, res: Response) => {
-    const keyword = req.query.keyword;
-    const status = Number(req.query.status) ? Number(req.query.status) : 0;
+    const ten_phim = req.query.tenPhim;
     try {
-      let listFlim = await ListFlimForWeb(keyword, status);
+      let listFlim = await ListFlimForWeb(ten_phim);
       ResponseSuccess(res, listFlim);
     } catch (e: any) {
       return SystemError(res, e);
@@ -71,8 +70,6 @@ class WebController {
   };
   getHeThongRap = async (req: Request, res: Response) => {
     let ma_he_thong_rap = req.query.ma_he_thong_rap;
-    console.log(ma_he_thong_rap);
-
     try {
       let listHethong = await GetAllRapPhimForWeb(ma_he_thong_rap);
       ResponseSuccess(res, listHethong);
@@ -121,12 +118,7 @@ class WebController {
     let ma_lich_chieu = Number(req.query.malichchieu);
     try {
       const list: any = await ListBookedTicks(ma_lich_chieu);
-      list.map((e: any) => {
-        const a = e.ma_ghe1;
-        console.log({ a: a });
-        console.log(typeof a);
-      });
-      // ResponseSuccess(res, list);
+      ResponseSuccess(res, list);
     } catch (e: any) {
       return SystemError(res, e);
     }

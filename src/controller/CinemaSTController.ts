@@ -51,7 +51,6 @@ class CinemaSystemController {
                 basic_info.logo = result.url;
             }
             delete basic_info.hinh_anh;
-            console.log(basic_info);
             
             await UpdateSystem(basic_info, id);
             ResponseSuccess(res);
